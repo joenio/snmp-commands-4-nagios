@@ -7,22 +7,38 @@
 #
 # exec check_proc [d]elayed_job
 #
-# This is usefull to check proccess name of scripts (Perl, Ruby, etc) via SNMP
+# This is usefull to check process name of scripts (Perl, Ruby, etc) via SNMP
 # because SNMP proc cant see that. SNMP proc uses "ps -e" and scripts Perl for
 # example appear as perl instead of name of script.
 #
 # License: GPLv2+
 
 PROCNAME=$1
+USERNAME=$2
+
+ok() {
+   echo "OK $PROCNAME process is running"
+   exit 0
+}
+crit() {
+   echo "CRIT $PROCNAME process isnt running"
+   exit 2
+}
+
 if [ -z $PROCNAME ]; then
    echo "Please inform proc name in command line."
    echo "   eg.: check_proc [a]pache2"
+   echo "You can restrict by user"
+   echo "   eg.: chack_proc [a]pache www-data"
    exit 3
 fi
 
-USERNAME=$2
 if [ -z $USERNAME ]; then
-   (ps -A -f | grep $PROCNAME > /dev/null) && exit 0 || exit 2
+   (ps -A -f | grep $PROCNAME > /dev/null) && ok || crit
 else
-   (ps -u $USERNAME -f | grep $PROCNAME > /dev/null) && exit 0 || exit 2
+   (ps -u $USERNAME -f | grep $PROCNAME > /dev/null) && ok || crit
 fi
+
+# TODO
+# 1) Modify argument for process name to add first letter inner []
+#    to avoid mistakes
