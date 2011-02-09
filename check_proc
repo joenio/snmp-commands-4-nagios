@@ -3,9 +3,9 @@
 # Copyright (c) 2011 Colivre
 # Author Joenio Costa <joenio AT perl.org.br>
 #
-# Add to snmpd.conf:
+# Add to snmpd.conf for example:
 #
-# exec check_proc [d]elayed_job
+# exec delayed_job $PATH/check_proc [d]elayed_job
 #
 # This is usefull to check process name of scripts (Perl, Ruby, etc) via SNMP
 # because SNMP proc cant see that. SNMP proc uses "ps -e" and scripts Perl for
