@@ -21,7 +21,7 @@ ok() {
    exit 0
 }
 crit() {
-   echo "CRIT $PROCNAME process isnt running"
+   echo "CRITICAL $PROCNAME process isnt running"
    exit 2
 }
 
