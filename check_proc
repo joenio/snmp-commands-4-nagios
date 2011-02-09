@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Copyright (c) 2011 Colivre
+# Author Joenio Costa <joenio AT perl.org.br>
+#
+# Add to snmpd.conf:
+#
+# exec check_proc [d]elayed_job
+#
+# This is usefull to check proccess name of scripts (Perl, Ruby, etc) via SNMP
+# because SNMP proc cant see that. SNMP proc uses "ps -e" and scripts Perl for
+# example appear as perl instead of name of script.
+#
+# License: GPLv2+
+
+PROCNAME=$1
+if [ -z $PROCNAME ]; then
+   echo "Please inform proc name in command line."
+   echo "   eg.: check_proc [a]pache2"
+   exit 3
+fi
+
+USERNAME=$2
+if [ -z $USERNAME ]; then
+   (ps -A -f | grep $PROCNAME > /dev/null) && exit 0 || exit 2
+else
+   (ps -u $USERNAME -f | grep $PROCNAME > /dev/null) && exit 0 || exit 2
+fi
