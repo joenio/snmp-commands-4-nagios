@@ -36,7 +36,7 @@ fi
 PROC=`echo $PROCNAME | sed 's/^\(.\)/[\1]/'`
 
 if [ -z $USERNAME ]; then
-   (ps -A -f | grep $PROC > /dev/null) && ok || crit
+   (ps -A -o comm,args | grep -v $0 | grep $PROC > /dev/null) && ok || crit
 else
-   (ps -u $USERNAME -f | grep $PROC > /dev/null) && ok || crit
+   (ps -u $USERNAME -o comm,args | grep -v $0 | grep $PROC > /dev/null) && ok || crit
 fi
