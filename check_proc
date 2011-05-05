@@ -5,7 +5,7 @@
 #
 # Add to snmpd.conf for example:
 #
-# exec delayed_job $PATH/check_proc [d]elayed_job
+# exec delayed_job $PATH/check_proc delayed_job
 #
 # This is usefull to check process name of scripts (Perl, Ruby, etc) via SNMP
 # because SNMP proc cant see that. SNMP proc uses "ps -e" and scripts Perl for
@@ -27,18 +27,16 @@ crit() {
 
 if [ -z $PROCNAME ]; then
    echo "Please inform proc name in command line."
-   echo "   eg.: check_proc [a]pache2"
+   echo "   eg.: check_proc apache2"
    echo "You can restrict by user"
-   echo "   eg.: chack_proc [a]pache www-data"
+   echo "   eg.: check_proc apache www-data"
    exit 3
 fi
 
-if [ -z $USERNAME ]; then
-   (ps -A -f | grep $PROCNAME > /dev/null) && ok || crit
-else
-   (ps -u $USERNAME -f | grep $PROCNAME > /dev/null) && ok || crit
-fi
+PROC=`echo $PROCNAME | sed 's/^\(.\)/[\1]/'`
 
-# TODO
-# 1) Modify argument for process name to add first letter inner []
-#    to avoid mistakes
+if [ -z $USERNAME ]; then
+   (ps -A -f | grep $PROC > /dev/null) && ok || crit
+else
+   (ps -u $USERNAME -f | grep $PROC > /dev/null) && ok || crit
+fi
