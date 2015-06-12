@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Copyright (c) 2015 Colivre
+# Author Joenio Costa <joenio AT colivre.coop.br>
+
+# TODO check in a route exists by using `route` command line
