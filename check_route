@@ -3,6 +3,8 @@
 # Copyright (c) 2015 Colivre
 # Author Joenio Costa <joenio AT colivre.coop.br>
 #
+# Check kernel linux route table via `ip route show` command.
+#
 # On Debian add to /etc/snmpd.conf file:
 #
 #   { exec OR extend } <IP TO CHECK> $PATH/check_route <IP TO CHECK>
