@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Copyright (c) 2015 Colivre
+# Author Joenio Costa <joenio AT colivre.coop.br>
+#
+# Check if a port is open using `telnet` command.
+#
+# Example:
+#
+#   check_port 10.2.1.1 389
+#
+# License: GPLv2+
+
+HOST=$1
+PORT=$2
+
+ok() {
+   echo "OK port $PORT on host $HOST is open"
+   exit 0
+}
+crit() {
+   echo "CRITICAL port $PORT on host $HOST isn't open"
+   exit 2
+}
+
+if [ -z $HOST ] || [ -z $PORT ]; then
+   echo "Please inform host and port in the command line."
+   echo "   eg.: check_port www.example.com 8080"
+   exit 3
+fi
+
+(echo "quit" | telnet $HOST $PORT 2>&1 | grep -q -i "connected to" > /dev/null) && ok || crit
